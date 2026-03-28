@@ -1,0 +1,22 @@
+﻿# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual environments
+.venv/
+veriAnaliz/.venv/
+veriAnaliz/.venv_backup/
+
+# Data (raw & synthetic)
+*.xlsx
+*/yapay_veri.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/

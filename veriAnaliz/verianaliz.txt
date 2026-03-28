@@ -1,0 +1,303 @@
+ Veri Seti Genel Yapısı
+Toplam 270 satır veri var
+28 farklı sütun (değişken) bulunuyor
+Veriler çoğunlukla sayısal (int64 ve float64) ve az sayıda metin (object) türünde
+2. Değişken Grupları
+Temel Bilgiler:
+
+Yaş(Hafta)
+GRUP
+Genotip
+Yerleşim Sıklığı
+Fiziksel Ölçümler:
+
+AĞIRLIK
+UZUNLUK
+GENİŞLİK
+Şekil İndeksi
+Yumurta Bileşenleri:
+
+AK özellikleri (UZUNLUĞU, GENİŞLİĞİ, YÜKSEKLİĞİ)
+SARI özellikleri (GENİŞLİĞİ, YÜKSEKLİĞİ, İndeksi)
+3. Veri Kalitesi
+Eksik veriler sadece "Unnamed: 27" sütununda (266 eksik değer)
+Diğer tüm sütunlarda eksik veri yok
+Veri seti oldukça temiz ve analiz için hazır
+
+###
+Index(['Yaş(Hafta)', 'GRUP', 'Genotip', 'Yerleşim Sıklığı', 'Tekerrür',
+       'Örnek', 'AĞIRLIK', 'UZUNLUK', 'GENİŞLİK', 'Şekil İndeksi', 'MUKAVEMET',
+       'KÜT', 'ORTA', 'SİVRİ', 'Ortalama', 'AK UZUNLUĞU', 'AK GENİŞLİĞİ',
+       'AK YÜKSEKLİĞİ', 'Ak İndeksi', 'Haugh Birimi', 'SARI GENİŞLİĞİ',
+       'SARI YÜKSEKLİĞİ', 'Sarı İndeksi', 'SARI SKORU', 'PH', 'AK', 'SARI'],
+      dtype='object')
+
+
+       Yaş(Hafta)  Yerleşim Sıklığı    Tekerrür  ...          PH          AK        SARI
+count   270.00000        270.000000  270.000000  ...  270.000000  270.000000  270.000000
+mean     41.20000         21.111111    2.000000  ...    8.787037    0.122222    0.185185
+std       5.95747          3.935666    0.818013  ...    0.180192    0.426652    0.574362
+min      33.00000         15.000000    1.000000  ...    8.000000    0.000000    0.000000
+25%      37.00000         20.000000    1.000000  ...    8.690000    0.000000    0.000000
+50%      41.00000         20.000000    2.000000  ...    8.810000    0.000000    0.000000
+75%      45.00000         25.000000    3.000000  ...    8.910000    0.000000    0.000000
+max      50.00000         25.000000    3.000000  ...    9.220000    3.000000    2.000000
+
+
+### string columns  da 
+
+[8 rows x 25 columns]
+GRUP
+WK     60
+WO     45
+BO     45
+BK     40
+BS     30
+WS     30
+BK     20
+Name: count, dtype: int64
+Genotip
+Lohmanbrown    135
+lohmanwhite    135
+Name: count, dtype: int64
+
+###### kolerasyonla alakalı gelişmeler
+1️⃣ Genel Bakış
+
+Matris, tüm sayısal değişkenlerin birbirleriyle olan doğrusal ilişkilerini gösteriyor.
+
+Renkler:
+
+Koyu kırmızı → +1’e yakın, güçlü pozitif ilişki
+
+Koyu mavi → -1’e yakın, güçlü negatif ilişki
+
+Beyaz → 0 civarı, ilişkisiz
+
+Matris üzerinde diagonal (köşegen) değerler her zaman 1 çünkü her değişken kendisiyle tamamen ilişkili.
+
+2️⃣ Güçlü pozitif ilişkiler
+
+AĞIRLIK – UZUNLUK – GENİŞLİK:
+
+Örnek: AĞIRLIK ile UZUNLUK ~0.65
+
+Örnek: AĞIRLIK ile GENİŞLİK ~0.86
+
+Yani yumurta ağırlığı arttıkça uzunluğu ve genişliği de artıyor → mantıklı.
+
+KÜT – ORTA – SİVRİ – Ortalama:
+
+Bu gruptaki değişkenler neredeyse birbirine çok yüksek (0.7-0.9) korelasyonlu
+
+Çünkü bunlar yumurta boyutlarının farklı ölçümleri gibi görünüyor.
+
+AK YÜKSEKLİĞİ – Ak İndeksi – Haugh Birimi:
+
+Bu üç değişken arasında çok güçlü pozitif ilişki (~0.94)
+
+Yani yumurta kalitesiyle ilgili ölçümler birbirini destekliyor.
+
+3️⃣ Güçlü negatif ilişkiler
+
+SARI YÜKSEKLİĞİ – Yaş(Hafta):
+
+~ -0.53 korelasyon
+
+Yumurtlayan tavuklar yaşlandıkça sarı yüksekliği azalıyor gibi görünüyor.
+
+Sari İndeksi – Yaş(Hafta):
+
+~ -0.50 korelasyon
+
+Yine yaş ilerledikçe sarı ile ilgili bazı ölçümler düşüyor.
+
+4️⃣ Orta veya düşük ilişkiler
+
+Birçok değişken arasında korelasyon 0.1–0.3 arası → çok zayıf ilişki
+
+Bu, bazı ölçümlerin birbirini fazla etkilemediğini gösterir.
+
+5️⃣ Uygulama açısından çıkarımlar
+
+Güçlü korelasyonlu değişkenler modelde multicollinearity (çoklu doğrusal ilişki) sorununa yol açabilir.
+
+Örnek: AK YÜKSEKLİĞİ, Ak İndeksi, Haugh Birimi
+
+Bu değişkenlerden birini seçmek daha mantıklı olabilir.
+
+Pozitif ve negatif ilişkileri bilmek, modelde hangi değişkenlerin diğerlerini tahmin edebileceğini gösterir.
+
+Görselleştirme faydası: Hangi özelliklerin birlikte arttığını veya azaldığını hızlıca görüyorsun.
+
+
+##########
+Detaylı Yorum
+
+Normal grupta (False) sarı indeksi çok daha geniş bir aralıkta değişiyor.
+Alt tarafta 22, 26, 27, 29, 30 gibi ciddi düşük değerler var → bu yüzden uç değer tespit edilmiş.
+
+Aykırı grup (True) için ise değerler:
+
+Daha dar aralıkta (yaklaşık 38–44 arası)
+
+Daha istikrarlı / homojen görünüyor
+
+➡️ İlginç olan şu:
+Aykırı diye etiketlenen satırlarda Sarı İndeksi aslında daha stabil.
+Aykırı olanların sarı indeksi daha normal ve ortalamaya yakın.
+
+Bu bize şunu düşündürüyor:
+
+📌 Aykırı değer olmasının sebebi Sarı İndeksi değil.
+
+❗ Ne Anlama Geliyor?
+
+Bu veri analizi sonucuna göre:
+
+Aykırı değer tespiti Sarı İndeksi yüzünden olmamış.
+
+Aykırıların kaynağı başka bir değişken olabilir (örneğin: kırılma kuvveti veya ağırlık).
+
+Sarı İndeksi'nde normal grupta ciddi uç değerler var → yumurtaların bazıları çok soluk sarı renkli.
+
+✨ Sonuç
+
+Aykırı grubu değil, normal grup Sarı İndeksi açısından daha problemli.
+
+Yani "AykırıMi" etiketi bu değişkende mantıklı değil; Sarı İndeksi değişkeni bu ayrımı desteklemiyor.
+
+➕ İlerleme İçin Öneri
+
+Şimdi yapmamız gereken:
+
+✅ Aykırı olan satırların hangi değişkenden dolayı aykırı olduğunu bulmak.
+
+Bunu yapmak için en etkili analiz:
+
+➤ Correlation (korelasyon) analizi + Pairplot (çeşitli değişkenlere göre dağılım grafiği)
+
+Eğer istersen bir sonraki adımda sana aykırı satırlar ile normal satırları karşılaştıran korelasyon heatmap çıkarayım.
+
+Sorular
+
+Devam etmeden önce:
+
+🔸 Pairplot + heatmap ile değişken ilişkilerini görmek ister misin?
+
+Cevap örneği:
+
+Grafik Yorumu – pH Değeri (PH)
+
+Grafikte aykırı olarak işaretlenen yumurtalar (True) ile normal yumurtalar (False) pH açısından karşılaştırılmış.
+
+📌 Gözlemler
+Özellik	Normal (False)	Aykırı (True)
+Medyan (orta değer)	≈ 8.85	≈ 8.75
+Dağılım genişliği	Daha geniş	Daha dar
+Alt uç değer sayısı	Fazla (≈ 8.0–8.3 arası uç noktalar var)	Çok az, hatta yok
+🔍 Detaylı Yorum
+
+Normal grup (False)
+
+Daha geniş bir dağılım gösteriyor.
+
+Özellikle alt tarafta 8.0 – 8.3 pH gibi düşük değerli uç noktalar bulunuyor.
+
+Medyan yüksek olmasına rağmen pH dalgalanması fazla → bu yumurta grubu daha heterojen.
+
+Aykırı grup (True)
+
+pH değerleri daha sıkışık, stabil.
+
+Aykırı olarak işaretlenmelerine rağmen pH açısından normal gruptan daha düzgün bir dağılıma sahipler.
+
+➡️ Bu yine şu sonuca götürüyor:
+
+📌 AykırıMi sütunu pH değişkenine göre belirlenmemiş.
+
+Çünkü:
+
+Aykırı grubunda pH değerleri daha kararlı ve uç nokta içermiyor.
+
+Normal grupta pH daha değişken ve uç değerler var.
+
+✨ Sonuç
+
+Aykırı değerler pH değişkenine göre oluşmamış.
+Normal olarak etiketlenen grupta daha fazla oynaklık var.
+
+Bu da bize şunu gösteriyor:
+
+Aykırılık başka bir değişkende ortaya çıkıyor (örneğin kırılma kuvveti, ağırlık vs.).
+
+pH, aykırılık kriterinde belirleyici bir rol oynamıyor.
+
+✅ Şimdi ne yapıyoruz?
+
+Şu ana kadar 3 değişkeni karşılaştırdık: Ağırlık, Sarı İndeksi, pH
+
+Hepsinde benzer sonuçları gördük:
+
+✅ Aykırı olanlar genelde daha stabil
+❗ Aykırılık sebebi başka bir değişken
+
+👉 Bir sonraki adım: korelasyon ve ilişki analizi
+
+Sana şu analizleri yapabilirim:
+
+Korelasyon matrisi (heatmap) → hangi değişkenler birbirini etkiliyor?
+
+Pairplot → aykırı/normale göre değişkenlerin dağılımları
+
+Aykırı değerlerin hangi değişkenden kaynaklandığını net bulma
+
+
+
+GENEL SONUÇ (Aykırı Değer Analizi + Değişken Karşılaştırmaları)
+
+Veri setinde "Ortalama" kolonu üzerinden IQR yöntemi ile aykırı değer tespit edildi.
+Bu aykırı satırları alıp, diğer değişkenler (Ağırlık, Sarı İndeksi, pH...) ile karşılaştırdık.
+
+📌 1. Aykırı değerler sadece "Ortalama" değişkeninde ortaya çıkıyor
+
+Diğer değişkenlere baktığımızda:
+
+Ağırlık
+
+Sarı indeksi (yolk index)
+
+pH
+
+➡️ Bu değişkenlerde aykırı olan ve olmayan gruplar arasında aşırı bir sapma, uç değer davranışı yok.
+
+📌 2. İlginç şekilde aykırı olarak işaretlenen satırlar genelde daha stabil
+
+Grafiklerden gördük:
+
+Değişken	Normal Grup (False)	Aykırı Grup (True)
+Ağırlık	daha geniş dağılım	daha sıkışık, stabil
+Sarı İndeksi	uç noktalar var	stabil
+pH	düşük uç değerler var	çok stabil
+
+➡️ Aykırı olmayan grup daha dağınık,
+➡️ Aykırı grup daha düzenli çıktı.
+
+Bu bize şunu söylüyor:
+
+Aykırılık diğer değişkenlerden değil, "Ortalama" değerinin istatistiksel sınırların dışına taşmasından kaynaklanıyor.
+
+📌 3. Aykırı değerler veri hatası ya da deneysel farklılık olabilir
+
+Bu satırlar:
+
+farklı haftadaki yumurtalara,
+
+farklı yerleşim sıklığına,
+
+farklı örnek numaralarına
+
+ait olabilir.
+####### normalizasyon 
+normalizson her saayısal değerler birbirinden farklı birimde olduğu için çok da birbiri ile karşılaştırma biçiminde değerlerndirilmez
+o yüzden biz de normalizasyon yapıyoruz.
